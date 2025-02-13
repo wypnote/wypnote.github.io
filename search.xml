@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>文档</title>
+      <link href="/2025/02/09/%E6%96%87%E6%A1%A3/"/>
+      <url>/2025/02/09/%E6%96%87%E6%A1%A3/</url>
+      
+        <content type="html"><![CDATA[<p>swiper_index: 首页轮播图， 数字越小越靠前</p><p>top_group_index:首页卡片配置，数字越小越靠前</p><p>background：page中的颜色，可配置为16进制颜色值</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 文档 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 博客搭建 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>next数组</title>
+      <link href="/2025/02/09/next%E6%95%B0%E7%BB%84/"/>
+      <url>/2025/02/09/next%E6%95%B0%E7%BB%84/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> coding </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>hello world</title>
       <link href="/2025/02/09/world/"/>
       <url>/2025/02/09/world/</url>
