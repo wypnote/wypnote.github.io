@@ -4,6 +4,85 @@
   
     
     <entry>
+      <title>回声服务器</title>
+      <link href="/2025/02/24/%E5%9B%9E%E5%A3%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <url>/2025/02/24/%E5%9B%9E%E5%A3%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+      
+        <content type="html"><![CDATA[<p>回声服务器：将从客户端收到的数据原样返回给客户端，即“回声”。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 套接字通信 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>IO多路转接（复用）之EPOLL</title>
+      <link href="/2025/02/24/IO%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%EF%BC%88%E5%A4%8D%E7%94%A8%EF%BC%89%E4%B9%8BEPOLL/"/>
+      <url>/2025/02/24/IO%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%EF%BC%88%E5%A4%8D%E7%94%A8%EF%BC%89%E4%B9%8BEPOLL/</url>
+      
+        <content type="html"><![CDATA[<h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 套接字通信 </tag>
+            
+            <tag> TCP </tag>
+            
+            <tag> IO多路复用 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Qt聊天室项目</title>
+      <link href="/2025/02/19/Qt%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/"/>
+      <url>/2025/02/19/Qt%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/</url>
+      
+        <content type="html"><![CDATA[<p>做一个入门项目，多人的聊天室。</p><p><strong>需求概述</strong></p><p>客户端要求使用Qt或者MFC 界面实现功能（建议用QT写）</p><p>服务端搭建在Linux环境中 用<strong>epoll</strong>模型来实现群聊服务器</p><p><strong>服务器端功能需求</strong></p><p>服务器能够选择端口号并且启动服务器端的 TCP 服务，等待客户端的 Socket 连接。</p><p>服务器能够接受多个客户端的请求，并且能够识别不同的客户端。为每个客户端建立唯一的身份表示。</p><p>连接成功后，服务器能接收客户端发过来的文本信息并显示并且转发给客户端。</p><p>服务器端能够显示本机的地址和状态。</p><p><strong>客户端功能需求</strong></p><p>用户可以通过指定主机地址和端口号连接指定的服务器。用户在连接过程中选择 TCP 协议进行连接。</p><p>实现消息收发，用户能够通过界面发送消息，并且能通过界面显示服务端发送过来的信息。</p><p>实现文件传输功能，可以传文件到群里，其他人可以选择是否下载，点击下载就会将文件下载到本地</p><h3 id="一、UI设计"><a href="#一、UI设计" class="headerlink" title="一、UI设计"></a>一、UI设计</h3><p>界面大概是这个样子</p><p><img src="https://bu.dusays.com/2025/02/20/67b6cd2fc04fc.png"></p><p>对于窗口标题的设置</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在构造函数中添加</span></span><br><span class="line"><span class="keyword">this</span>-&gt;<span class="built_in">setWindowTitle</span>(<span class="string">&quot;快乐聊天室&quot;</span>);</span><br><span class="line"><span class="comment">// 设置空标题</span></span><br><span class="line"><span class="keyword">this</span>-&gt;<span class="built_in">setWindowTitle</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="comment">// 完全一出标题栏 （失去窗口控制按钮）</span></span><br><span class="line"><span class="keyword">this</span>-&gt;<span class="built_in">setWindowFlags</span>(Qt::Window | Qt::FramelessWindowHint);</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Qt </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 聊天室项目 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何使用满血版deepseek</title>
       <link href="/2025/02/18/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%BB%A1%E8%A1%80%E7%89%88deepseek/"/>
       <url>/2025/02/18/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%BB%A1%E8%A1%80%E7%89%88deepseek/</url>
