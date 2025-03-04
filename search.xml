@@ -4,60 +4,6 @@
   
     
     <entry>
-      <title>回声服务器</title>
-      <link href="/2025/02/24/%E5%9B%9E%E5%A3%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-      <url>/2025/02/24/%E5%9B%9E%E5%A3%B0%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
-      
-        <content type="html"><![CDATA[<p>回声服务器：将从客户端收到的数据原样返回给客户端，即“回声”。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> Linux </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 套接字通信 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>IO多路转接（复用）之EPOLL</title>
-      <link href="/2025/02/24/IO%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%EF%BC%88%E5%A4%8D%E7%94%A8%EF%BC%89%E4%B9%8BEPOLL/"/>
-      <url>/2025/02/24/IO%E5%A4%9A%E8%B7%AF%E8%BD%AC%E6%8E%A5%EF%BC%88%E5%A4%8D%E7%94%A8%EF%BC%89%E4%B9%8BEPOLL/</url>
-      
-        <content type="html"><![CDATA[<h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3>]]></content>
-      
-      
-      <categories>
-          
-          <category> Linux </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 套接字通信 </tag>
-            
-            <tag> TCP </tag>
-            
-            <tag> IO多路复用 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Qt聊天室项目</title>
       <link href="/2025/02/19/Qt%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/"/>
       <url>/2025/02/19/Qt%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/</url>
@@ -100,56 +46,6 @@
         <tags>
             
             <tag> 教程 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>next数组</title>
-      <link href="/2025/02/09/next%E6%95%B0%E7%BB%84/"/>
-      <url>/2025/02/09/next%E6%95%B0%E7%BB%84/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      <categories>
-          
-          <category> 算法 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> coding </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>hello world</title>
-      <link href="/2025/02/09/world/"/>
-      <url>/2025/02/09/world/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      <categories>
-          
-          <category> 测试 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 测试 </tag>
             
         </tags>
       
