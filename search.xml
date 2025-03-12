@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>多模态融合和跨模态对齐</title>
+      <link href="/2025/03/12/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%9E%8D%E5%90%88%E5%92%8C%E8%B7%A8%E6%A8%A1%E6%80%81%E5%AF%B9%E9%BD%90/"/>
+      <url>/2025/03/12/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%9E%8D%E5%90%88%E5%92%8C%E8%B7%A8%E6%A8%A1%E6%80%81%E5%AF%B9%E9%BD%90/</url>
+      
+        <content type="html"><![CDATA[<p>多模态学习（Multimodal Learning）是一种通过整合多种数据模态（如文本、图像、音频、视频等）来提升模型对复杂信息的理解能力的技术。其核心目标是利用不同模态的互补性与冗余性，突破单一模态的信息局限，模拟人类多感官协同认知的能力。</p><p>多模态融合和跨模态对齐是多模态学习的两个核心方面。多模态融合通过整合不同模态的数据来提高模型的感知和理解能力；而跨模态对齐则确保不同模态数据之间的准确对应，为融合提供可靠的基础。</p><p><img src="https://bu.dusays.com/2025/03/12/67d13c8eeb659.png"></p><h3 id="什么是多模态融合？"><a href="#什么是多模态融合？" class="headerlink" title="什么是多模态融合？"></a><p align="center">什么是多模态融合？</p></h3><p><strong>模态融合能够充分利用各模态之间的互补优势，将来自不同模态的信息整合成一个稳定且全面的多模态表征。</strong></p><p><strong>表征学习通过从原始数据中自动提取各模态有效特征，生成稳定全面的多模态表征。</strong></p><p><strong>表征学习（Representation Learning） ≈ 向量化（Embedding）</strong></p><p><strong>从数据处理的层次角度来划分，多模态融合可分为数据级融合、特征级融合和目标级融合。</strong></p><p><img src="https://bu.dusays.com/2025/03/12/67d13f78705ba.png"></p><h4 id="一、数据级融合（Data-Level-Fusion）："><a href="#一、数据级融合（Data-Level-Fusion）：" class="headerlink" title="一、数据级融合（Data-Level Fusion）："></a><strong>一、数据级融合（Data-Level Fusion）</strong>：</h4><p><strong>数据级融合是在预处理阶段将不同模态的原始数据直接合并，适用于高度相关和互补的数据场景。</strong></p><h4 id="二、特征级融合（Feature-Level-Fusion）："><a href="#二、特征级融合（Feature-Level-Fusion）：" class="headerlink" title="二、特征级融合（Feature-Level Fusion）："></a><strong>二、特征级融合（Feature-Level Fusion）</strong>：</h4><p><strong>特征级融合是在特征提取之后、决策之前进行的融合。不同模态的数据首先被分别处理，提取出各自的特征表示，然后将这些特征表示在某一特征层上进行融合。广泛应用于图像分类、语音识别、情感分析等多模态任务中。</strong></p><h4 id="三、目标级融合（Decision-Level-Fusion）："><a href="#三、目标级融合（Decision-Level-Fusion）：" class="headerlink" title="三、目标级融合（Decision-Level Fusion）："></a><strong>三、目标级融合（Decision-Level Fusion）：</strong></h4><p><strong>目标级融合是在各单模态模型决策后将预测结果进行整合以得出最终决策,，适用于多模型预测结果综合的场景，如多传感器数据融合、多专家意见综合等</strong></p><p><img src="https://bu.dusays.com/2025/03/12/67d142b18c030.png"></p><h3 id="什么是跨模态对齐"><a href="#什么是跨模态对齐" class="headerlink" title="什么是跨模态对齐?"></a><p align = "center">什么是跨模态对齐?</p></h3><p>​<strong>跨模态对齐是指利用各种技术手段，使不同模态的数据（例如图像、文本、音频等）在特征、语义或表示层面上能够达到匹配与对应。</strong></p><p><strong>跨模态对齐主要分为两大类：显示对齐和隐式对齐。</strong></p><p><img src="https://bu.dusays.com/2025/03/12/67d143d0e4778.png"></p><p><strong>什么是显示对齐？           -&gt;直接建立不同模态之间的对应关系，包括无监督对齐和监督对齐。</strong></p><p><strong>无监督对齐利用数据自身特性自动发现模态间对应关系，如CCA和自编码器；监督对齐则利用标签信息指导对齐，如多模态嵌入和多任务学习模型。</strong></p><p><strong>什么是隐式对齐（Implicit Alignment）？          -&gt;不直接建立对应关系，而是通过模型内部机制隐式地实现跨模态的对齐。这包括注意力对齐和语义对齐。</strong></p><h4 id="一、注意力对齐"><a href="#一、注意力对齐" class="headerlink" title="一、注意力对齐"></a><strong>一、注意力对齐</strong></h4><p><strong>通过注意力机制动态地生成不同模态之间的权重向量，实现跨模态信息的加权融合和对齐。</strong></p><ul><li><strong>Transformer模型：在跨模态任务中（如图像描述生成），利用自注意力机制和编码器-解码器结构，自动学习图像和文本之间的注意力分布，实现隐式对齐。</strong></li><li><strong>BERT-based模型：在问答系统或文本-图像检索中，结合BERT的预训练表示和注意力机制，隐式地对齐文本查询和图像内容。</strong></li></ul><h4 id="二、语义对齐"><a href="#二、语义对齐" class="headerlink" title="二、语义对齐"></a><strong>二、语义对齐</strong></h4><p><strong>在语义层面上实现不同模态之间的对齐，需要深入理解数据的潜在语义联系。</strong></p><ul><li><strong>图神经网络（GNN）：在构建图像和文本之间的语义图时，利用GNN学习节点（模态数据）之间的语义关系，实现隐式的语义对齐。</strong></li><li><strong>预训练语言模型与视觉模型结合：如CLIP（Contrastive Language-Image Pre-training），通过对比学习在大量图像-文本对上训练，使模型学习到图像和文本在语义层面上的对应关系，实现高效的隐式语义对齐。</strong></li></ul><p><img src="https://bu.dusays.com/2025/03/12/67d1460e59413.png"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 科研 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 科研记录 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>基础算法04</title>
       <link href="/2025/03/08/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%9504/"/>
       <url>/2025/03/08/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%9504/</url>
