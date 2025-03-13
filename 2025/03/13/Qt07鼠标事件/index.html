@@ -1,0 +1,603 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Qt07鼠标事件 | wyp的博客</title><meta name="keywords" content="Qt学习"><meta name="author" content="wyp"><meta name="copyright" content="wyp"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Qt07鼠标事件"><meta name="application-name" content="Qt07鼠标事件"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="Qt07鼠标事件"><meta property="og:url" content="http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/index.html"><meta property="og:site_name" content="wyp的博客"><meta property="og:description" content="个人认为，事件机制是Qt最难以理解且最为精妙的一部分。事件主要分为两种：  在与用户交互时发生。比如按下鼠标（mousePressEvent），敲击键盘（keyPressEvent）等。 系统自动发生，比如计时器事件（timerEvent）等。  在发生事件时（比如说上面说的按下鼠标），就会产生一个"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://bu.dusays.com/2025/03/13/67d2d63dc518c.png"><meta property="article:author" content="wyp"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://bu.dusays.com/2025/03/13/67d2d63dc518c.png"><meta name="description" content="个人认为，事件机制是Qt最难以理解且最为精妙的一部分。事件主要分为两种：  在与用户交互时发生。比如按下鼠标（mousePressEvent），敲击键盘（keyPressEvent）等。 系统自动发生，比如计时器事件（timerEvent）等。  在发生事件时（比如说上面说的按下鼠标），就会产生一个"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><meta name="msapplication-TileColor" content="var(--anzhiyu-main)"/><link rel="mask-icon" href="/img/siteicon/apple-icon-180.png" color="#5bbad5"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/apple-icon-180.png"/><link rel="apple-touch-icon-precomposed" sizes="180x180" href="/img/siteicon/apple-icon-180.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/16.png"/><link rel="bookmark" href="/img/siteicon/apple-icon-180.png"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2388-1668.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2048-1536.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1668-2224.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2224-1668.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1620-2160.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2160-1620.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1290-2796.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2796-1290.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1179-2556.jpg" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2556-1179.jpg" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1284-2778.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2778-1284.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2532-1170.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2436-1125.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2688-1242.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1792-828.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1242-2208.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2208-1242.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-750-1334.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"","mailMd5":""},
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: {"apiurl":"https://friends.anheyu.com/"},
+  navMusic: true,
+  mainTone: {"mode":"both","api":"https://img2color-go.vercel.app/api?img=","cover_change":true},
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":1,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    simplehomepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: wyp","link":"链接: ","source":"来源: wyp的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'wyp的博客',
+  title: 'Qt07鼠标事件',
+  postAI: '',
+  pageFillDescription: '一事件,  二事件的分发：event函数, 三事件过滤器（Even Filter）个人认为事件机制是最难以理解且最为精妙的一部分事件主要分为两种在与用户交互时发生比如按下鼠标敲击键盘等系统自动发生比如计时器事件等在发生事件时比如说上面说的按下鼠标就会产生一个对象这里是为的子类这个对象会传给当前组件的函数如果当前组件没有安装事件过滤器这个后面会提到则会被函数发放到相应的函数中这里是函数需要区分的是事件与信号并不相同比如鼠标单击按钮鼠标事件而按钮本身发射信号一般而言我们只需要关注单击信号不用考虑鼠标事件但是当我们要对该按钮做额外操作不想通过信号处理此时事件就是一个很好的选择关闭事件是一个常用的事件一事件中所有事件类都继承于在事件对象创建完毕后将这个事件对象传递给的函数函数并不直接处理事件而是按照事件对象的类型分派给特定的事件处理函数信号是通过来绑定槽函数处理响应那么事件是怎么处理的呢处理事件有种常用的方法重新实现部件的等事件处理函数这是最常用的一种方法不过只能用来处理特定部件的特定事件即需要新建类去实现重新实现函数这个函数的功能强大提供了完全的控制可以再事件过滤器得到事件之间就获得他们但是它一次只能处理一个事件向对象上安装事件过滤器因为一个程序只有一个对象实现的功能和函数相同优点是可以同时处理多个事件重新实现函数类的函数可以在事件达到默认事件处理函数之前获得该事件在对象上安装事件过滤器使用事件过滤器可以再一个界面类中同时处理不同子部件的事件在本类中实现实际编程中最常用的是方法其次是方法方法要继承类方法需要全局的事件过滤器减缓事件的传递鼠标事件常用的鼠标事件本篇处理事件用的是方法一重写鼠标事件单击释放双击移动滑轮鼠标事件使用的时候加头文件重写事件框架鼠标按下事件如果是鼠标左键按下如果是鼠标右键按下鼠标移动事件这里必须使用进行的按位与默认情况下触发事件需要点击一下才能触发可设置为自动触发鼠标释放事件鼠标双击事件如果是鼠标左键按下滚轮事件当滚轮远离使用者时当滚轮向使用者方向旋转时实例演示在控件中移动鼠标获取实时位置并显示在界面上创建类基类设置为这里用了类似自定义控件的方法对类进行封装设置基类是为了在界面中提升控件即将控件和关联提升时候必须二者基类相同在中声明鼠标事件鼠标移动事件鼠标按下事件鼠标释放事件在中重写事件鼠标移动显示坐标进行的按位与只有左键点击移动才满足鼠标按下显示鼠标释放清除显示在主函数中声明的类对象即声明一个类的控件声明类的控件设置边框另外当调用时即设置鼠标状态为自动触发需要将鼠标移动事件的语句去掉因为不需要点击触发了修改事件设置鼠标状态自动触发鼠标移动显示坐标鼠标按下显示鼠标释放清除显示效果展示这里用的是代码创建控件那么能不能用界面编辑然后在对控件提升呢答案是可以的但是需要注意的是此处不能选择全局包含否则会出现我想其中的原因主要是因为本实例是新建了一个类而不是像常用控件三自定义控件封装唯有自己强大博客园这篇博文中直接新添加了一个设计师界面类即包含当选择全局包含时就包含了主类其实也有解决的办法需要在提升界面的头文件处将工程目录下自定义控件的地址放于此处二事件的分发函数上面提到的函数称为事件处理器而函数的作用就在于事件的分发如果想在事件的分发之前就进行一些操作比如监听阻塞鼠标按下事件如果希望在事件分发之前做一些操作就可以重写这个函数了比如我们希望阻塞鼠标按下事件那么我们就在新建的类中重写函数该类的父类是在中声明事件鼠标按下事件鼠标释放事件声明事件在中重写事件重写鼠标按下事件重写鼠标释放事件重写事件如果鼠标按下再事件分发中做拦截静态转换将的对象转换为对象返回说明用户自己处理事件不往下分发即拦截上面的按下事件点击鼠标可以看到触发的是的事件即阻塞了的事件特别需要注意的是在将不需要阻塞分发的时候需要分发给父类的函数处理即由此可以见是一个集中处理不同类型的事件的地方如果你不想重写一大堆事件处理器就可以重写这个函数通过判断不同的事件鉴于重写函数需要十分小心注意父类的同名函数的调用一不留神就可能出现问题所以一般还是建议只重写事件处理器当然也必须记得是不是应该调用父类的同名处理器三事件过滤器某些应用场景下需要拦截某个组件发生的事件让这个事件不再向其他组件进行传播这时候可以为这个组件或其父组件安装一个事件过滤器该过滤器在分发之前进行拦截事件的过滤有两个步骤对组件安装过滤器调用函数参数是指谁为组件安装过滤器一般是父类这个函数接受一个类型的参数记得刚刚我们说的函数是的一个成员函数因此任意都可以作为事件过滤器问题在于如果你没有重写函数这个事件过滤器是没有任何作用的因为默认什么都不会过滤已经存在的过滤器则可以通过函数移除我们可以向一个对象上面安装多个事件处理器只要调用多次函数如果一个对象存在多个事件过滤器那么最后一个安装的会第一个执行也就是后进先执行的顺序事件过滤器的重写函数可以看到函数有两个参数一个为具体发生事件的组件一个为发生的事件产生的对象当事件是我们感兴趣的类型可以就地进行处理并令其不再转发给其他组件函数的返回值也是类型作用跟函数类似返回为不再转发则让其继续被处理实例通过事件过滤器阻塞上面代码中的鼠标按下事件第一步给添加过滤器第二步重写过滤事件如果鼠标按下再事件分发中做拦截返回说明用户自己处理事件不往下分发即拦截上面的按下事件重写鼠标按下事件重写事件分发如果鼠标按下再事件分发中做拦截返回说明用户自己处理事件不往下分发即拦截上面的按下事件运行结果可以看到在过滤器事件中就监听了鼠标按压即阻塞了后面的事件分发和鼠标按压转载自唯有自己强大如有侵权在下方评论立刻删除',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-13 21:43:11',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://bornleader10.github.io/" title="笔记站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/next.ico" alt="笔记站"/><span class="back-menu-item-text">笔记站</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">wyp的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 互动</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友情链接</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Qt/" style="font-size: 1.05rem;">Qt<sup>1</sup></a><a href="/tags/Qt%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">Qt学习<sup>7</sup></a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.05rem;">多线程<sup>2</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.05rem;">教程<sup>1</sup></a><a href="/tags/%E7%A7%91%E7%A0%94%E8%AE%B0%E5%BD%95/" style="font-size: 1.05rem;">科研记录<sup>1</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/" style="font-size: 1.05rem;">算法模板<sup>4</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 1.05rem;">网络编程<sup>1</sup></a><a href="/tags/%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/" style="font-size: 1.05rem;">聊天室项目<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" style="font-size: 1.05rem;">面试问题<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">15</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Qt/" itemprop="url">Qt</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/Qt%E5%AD%A6%E4%B9%A0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Qt学习</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Qt07鼠标事件</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-03-13T02:10:21.000Z" title="发表于 2025-03-13 10:10:21">2025-03-13</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-03-13T13:43:11.429Z" title="更新于 2025-03-13 21:43:11">2025-03-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">3.1k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="Qt07鼠标事件"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为济宁"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>济宁</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/"><header><a class="post-meta-categories" href="/categories/Qt/" itemprop="url">Qt</a><a href="/tags/Qt%E5%AD%A6%E4%B9%A0/" tabindex="-1" itemprop="url">Qt学习</a><h1 id="CrawlerTitle" itemprop="name headline">Qt07鼠标事件</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">wyp</span><time itemprop="dateCreated datePublished" datetime="2025-03-13T02:10:21.000Z" title="发表于 2025-03-13 10:10:21">2025-03-13</time><time itemprop="dateCreated datePublished" datetime="2025-03-13T13:43:11.429Z" title="更新于 2025-03-13 21:43:11">2025-03-13</time></header><p>个人认为，事件机制是Qt最难以理解且最为精妙的一部分。事件主要分为两种：</p>
+<ol>
+<li><strong>在与用户交互时发生</strong>。比如按下鼠标（mousePressEvent），敲击键盘（keyPressEvent）等。</li>
+<li><strong>系统自动发生</strong>，比如计时器事件（timerEvent）等。</li>
+</ol>
+<p>在发生事件时（比如说上面说的按下鼠标），就会产生一个QEvent对象（这里是QMouseEvent，为QEvent的子类），这个QEvent对象会传给当前组件的event函数。如果当前组件没有安装<strong>事件过滤器</strong>（这个后面会提到），则会被event函数发放到相应的xxxEvent函数中（这里是mousePressEvent函数）。</p>
+<p>需要区分的是：<strong>事件与信号并不相同。</strong></p>
+<p>比如：鼠标单击按钮，鼠标事件（QMouseEvent），而按钮本身发射clicked（）信号。一般而言我们只需要关注单击信号，不用考虑鼠标事件。但是当我们要对该按钮做额外操作，不想通过信号处理，此时事件就是一个很好的选择。关闭事件（QCloseEvent）是一个常用的事件。</p>
+<hr>
+<h3 id="一，事件"><a href="#一，事件" class="headerlink" title="一，事件"></a><font color="FF0000">一，事件</font></h3><p>Qt 中所有事件类都继承于 QEvent。在事件对象创建完毕后，Qt 将这个事件对象传递给 QObject 的 event()函数。event()函数并不直接处理事件，而是按照事件对象的类型分派给特定的事件处理函数（eventhandler）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29bf3e8d89.png"></p>
+<p>信号是通过connect（）来绑定槽函数处理响应，那么事件是怎么处理的呢？</p>
+<p><strong>处理事件有5种常用的方法：</strong></p>
+<ol>
+<li>重新实现部件的paintEvent（）、mousePressEvent()等事件处理函数。这是最常用的一种方法，不过只能用来处理特定部件的特定事件**（即需要新建类去实现）**</li>
+<li>重新实现notify（）函数。这个函数的功能强大，提供了完全的控制，可以再事件过滤器得到事件之间就获得他们。但是，它一次只能处理一个事件。</li>
+<li>向QApplication对象上安装事件过滤器。因为一个程序只有一个QApplication对象，实现的功能和notify（）函数相同，优点是可以同时处理多个事件。</li>
+<li>重新实现event（）函数。QObject类的event（）函数可以在事件达到默认事件处理函数之前获得该事件。</li>
+<li>在对象上安装事件过滤器。使用事件过滤器可以再一个界面类中同时处理不同子部件的事件**（在本类中实现）**</li>
+</ol>
+<p>实际编程中最常用的是方法（1），其次是方法（5）。方法2要继承QApplication类，方法3需要全局的事件过滤器，减缓事件的传递。</p>
+<p><strong>鼠标事件：</strong></p>
+<p>常用的鼠标事件：（本篇处理事件用的是方法一：重写鼠标事件）</p>
+<ul>
+<li>void mousePressEvent(QMouseEvent *event);      &#x2F;&#x2F;单击</li>
+<li>void mouseReleaseEvent(QMouseEvent *event);    &#x2F;&#x2F;释放</li>
+<li>void mouseDoubleClickEvent(QMouseEvent *event); &#x2F;&#x2F;双击</li>
+<li>void mouseMoveEvent(QMouseEvent *event);      &#x2F;&#x2F;移动</li>
+<li>void wheelEvent(QWheelEvent *event);           &#x2F;&#x2F;滑轮</li>
+</ul>
+<p><strong>鼠标事件使用的时候，加头文件： #include <QMouseEvent></strong></p>
+<p><strong>重写事件框架：</strong></p>
+<p><strong>1️⃣鼠标按下事件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Widget::mousePressEvent</span><span class="params">(QMouseEvent *event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 如果是鼠标左键按下   </span></span><br><span class="line">    <span class="keyword">if</span>(event-&gt;<span class="built_in">button</span>() == Qt::LeftButton)&#123;</span><br><span class="line">        ···</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果是鼠标右键按下</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(event-&gt;<span class="built_in">button</span>() == Qt::RightButton)&#123;</span><br><span class="line">       ···</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2️⃣鼠标移动事件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Widget::mouseMoveEvent</span><span class="params">(QMouseEvent *event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 这里必须使用buttons()</span></span><br><span class="line">    <span class="keyword">if</span>(event-&gt;<span class="built_in">buttons</span>() &amp; Qt::LeftButton)&#123;  <span class="comment">//进行的按位与</span></span><br><span class="line">       ···</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，触发事件需要点击一下，才能触发。可设置为自动触发:<strong>setMouseTracking(true);</strong> </p>
+<p><strong>3️⃣鼠标释放事件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Widget::mouseReleaseEvent</span><span class="params">(QMouseEvent *event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4️⃣鼠标双击事件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Widget::mouseDoubleClickEvent</span><span class="params">(QMouseEvent *event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 如果是鼠标左键按下</span></span><br><span class="line">    <span class="keyword">if</span>(event-&gt;<span class="built_in">button</span>() == Qt::LeftButton)&#123;</span><br><span class="line">      </span><br><span class="line">        ···</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>5️⃣滚轮事件</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Widget::wheelEvent</span><span class="params">(QWheelEvent *event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 当滚轮远离使用者时</span></span><br><span class="line">    <span class="keyword">if</span>(event-&gt;<span class="built_in">delta</span>() &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        ···</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;<span class="comment">//当滚轮向使用者方向旋转时</span></span><br><span class="line">        ···</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>实例演示</strong>（在label控件中，移动鼠标获取实时位置，并显示在界面上）</p>
+<ul>
+<li><strong>创建mylabel类，基类设置为QLabel</strong></li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29c1584eb6.png"></p>
+<p>这里用了类似自定义控件的方法，对Mylabel类进行封装。设置基类QLabel 是为了在ui界面中提升label控件（即将label控件和Mylabel关联，提升时候必须二者基类相同）</p>
+<ul>
+<li>在mylabel.h中声明鼠标事件</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;qlabel.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">mylabel</span> : <span class="keyword">public</span> QLabel</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">mylabel</span>(QWidget* parent = <span class="number">0</span>);</span><br><span class="line">    ~<span class="built_in">mylabel</span>();</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//鼠标移动事件</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">mouseMoveEvent</span><span class="params">(QMouseEvent* event)</span></span>;</span><br><span class="line">    <span class="comment">//鼠标按下事件</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">mousePressEvent</span><span class="params">(QMouseEvent* event)</span></span>;</span><br><span class="line">    <span class="comment">//鼠标释放事件</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">mouseReleaseEvent</span><span class="params">(QMouseEvent* event)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在mylabel.cpp中重写事件</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mylabel.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;QMouseEvent&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mylabel::<span class="built_in">mylabel</span>(QWidget* parent) :<span class="built_in">QLabel</span>(parent)</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">mylabel::~<span class="built_in">mylabel</span>()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//鼠标移动显示坐标</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mylabel::mouseMoveEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (event-&gt;<span class="built_in">buttons</span>() &amp; Qt::LeftButton)  <span class="comment">//进行的按位与（只有左键点击移动才满足）</span></span><br><span class="line">    &#123; </span><br><span class="line">        QString str = <span class="built_in">QString</span>(<span class="string">&quot;Move:(X:%1,Y:%2)&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>());</span><br><span class="line">         <span class="keyword">this</span>-&gt;<span class="built_in">setText</span>(str);</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//鼠标按下显示“ok，mouse is press”</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mylabel::mousePressEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setText</span>(<span class="string">&quot;Ok, mouse is press&quot;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//鼠标释放清除显示</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mylabel::mouseReleaseEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setText</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在主函数（QTest.cpp）中声明mylabel的类对象（即声明一个mylabel类的label控件）</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;qtest.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">QTest::<span class="built_in">QTest</span>(QWidget *parent)</span><br><span class="line">    : <span class="built_in">QWidget</span>(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ui.<span class="built_in">setupUi</span>(<span class="keyword">this</span>);    <span class="comment">//声明mylabel类的控件</span></span><br><span class="line">    mylabel* label1 = <span class="keyword">new</span> <span class="built_in">mylabel</span>(<span class="keyword">this</span>);</span><br><span class="line">    label1-&gt;<span class="built_in">setGeometry</span>(<span class="built_in">QRect</span>(<span class="number">130</span>, <span class="number">100</span>, <span class="number">271</span>, <span class="number">161</span>));    <span class="comment">//设置边框</span></span><br><span class="line">    label1-&gt;<span class="built_in">setFrameShape</span>(QFrame::Panel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29c2b5a2ed.png"></p>
+<p> 另外，当调用**setMouseTracking(true);**时（即设置鼠标状态为自动触发），需要将鼠标移动事件的if语句去掉（因为不需要点击触发了）</p>
+<p><strong>修改maylabel.cpp事件：</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mylabel.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;QMouseEvent&quot;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mylabel::<span class="built_in">mylabel</span>(QWidget* parent) :<span class="built_in">QLabel</span>(parent)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//设置鼠标状态（自动触发）</span></span><br><span class="line">    <span class="built_in">setMouseTracking</span>(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line">mylabel::~<span class="built_in">mylabel</span>()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//鼠标移动显示坐标</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mylabel::mouseMoveEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   QString str = <span class="built_in">QString</span>(<span class="string">&quot;Move:(X:%1,Y:%2)&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>());</span><br><span class="line">   <span class="keyword">this</span>-&gt;<span class="built_in">setText</span>(str);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//鼠标按下显示“ok，mouse is press”</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mylabel::mousePressEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setText</span>(<span class="string">&quot;Ok, mouse is press&quot;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//鼠标释放清除显示</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">mylabel::mouseReleaseEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">setText</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果展示：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29c4cbb6f7.gif"></p>
+<p><strong>😒这里用的是代码创建label控件，那么能不能用ui界面编辑然后在对label控件提升呢？</strong></p>
+<p>答案是可以的，但是需要注意的是：<strong>此处不能选择全局包含</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29c64cf2e2.png"></p>
+<p> <strong>否则会出现：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29c7542d19.png"></p>
+<p>我想其中的原因主要是因为：</p>
+<p>本实例是新建了一个mylabel类，而不是像<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xyf327/p/15097726.html">QT常用控件（三）——自定义控件封装 - 唯有自己强大 - 博客园 (cnblogs.com)</a>这篇博文中直接新添加了一个设计师界面类（即包含ui .h .cpp)。当选择全局包含时，就包含了主类。</p>
+<p>其实也有解决的办法：需要在提升界面的头文件处，将工程目录下自定义控件的地址放于此处</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29c8d1fe53.png"></p>
+<h3 id="二，事件的分发：event函数"><a href="#二，事件的分发：event函数" class="headerlink" title=" 二，事件的分发：event函数"></a><font color="FF0000"> 二，事件的分发：event函数</font></h3><p>上面提到的xxxEvent函数，称为事件处理器（event handler）。而event函数的作用就在于事件的分发。如果想在事件的分发之前就进行一些操作，比如监听（<strong>阻塞</strong>）鼠标按下事件。</p>
+<p> 如果希望在事件分发之前做一些操作，就可以重写这个 event()函数了。比如我们希望阻塞鼠标按下事件，那么我们就在新建的Mylabel类中重写event()函数**（该类的父类是QLabel）**</p>
+<ul>
+<li><strong>在Mylabel.h中声明event事件</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;qlabel.h&quot;</span></span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Mylabel</span> : <span class="keyword">public</span> QLabel</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Mylabel</span><span class="params">(QWidget* parent = <span class="number">0</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//鼠标按下事件</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">mousePressEvent</span><span class="params">(QMouseEvent* event)</span></span>; </span><br><span class="line">    <span class="comment">//鼠标释放事件</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">mouseReleaseEvent</span><span class="params">(QMouseEvent* event)</span></span>;</span><br><span class="line">    <span class="comment">//声明event事件</span></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">event</span><span class="params">(QEvent* e)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>在Mylabel.cpp中重写event事件。</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Mylabel.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;QMouseEvent&quot;</span></span></span><br><span class="line"></span><br><span class="line">Mylabel::<span class="built_in">Mylabel</span>(QWidget* parent) :<span class="built_in">QLabel</span>(parent)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重写鼠标按下事件</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Mylabel::mousePressEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;<span class="built_in">setText</span>(<span class="built_in">QString</span>(<span class="string">&quot;mouse is press x:%1,y:%2&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>()));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//重写鼠标释放事件</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Mylabel::mouseReleaseEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>-&gt;<span class="built_in">setText</span>(<span class="string">&quot;mouse is release &quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//重写event事件</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Mylabel::event</span><span class="params">(QEvent* e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//如果鼠标按下，再事件分发中做拦截</span></span><br><span class="line">    <span class="keyword">if</span> (e-&gt;<span class="built_in">type</span>()==QEvent::MouseButtonPress)</span><br><span class="line">    &#123;        <span class="comment">//静态转换（将QEvent的对象转换为QMouseEvent对象）</span></span><br><span class="line">        QMouseEvent* event = <span class="built_in">static_cast</span>&lt;QMouseEvent*&gt;(e);</span><br><span class="line">        <span class="keyword">this</span>-&gt;<span class="built_in">setText</span>(<span class="built_in">QString</span>(<span class="string">&quot;event mouse is press x:%1,y:%2&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>()));</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//返回ture，说明用户自己处理事件，不往下分发（即拦截上面的按下事件）</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> QLabel::<span class="built_in">event</span>(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29cb547ab2.png"></p>
+<p>点击鼠标可以看到，触发的是event的事件（即阻塞了mousePressEvent的事件）。<strong>特别****需要注意的是：在将不需要阻塞分发的时候，需要分发给父类的event函数处理。即（return QLable::event(e)；)</strong></p>
+<p>由此可以见，event()是一个集中处理不同类型的事件的地方。如果你不想重写一大堆事件处理器，就可以重写这个 event()函数，通过 QEvent::type()判断不同的事件。鉴于重写 event()函数需要十分小心注意父类的同名函数的调用，一不留神就可能出现问题，所以一般还是建议只重写事件处理器（当然，也必须记得是不是应该调用父类的同名处理器）。</p>
+<h3 id="三，事件过滤器（Even-Filter）"><a href="#三，事件过滤器（Even-Filter）" class="headerlink" title="三，事件过滤器（Even Filter）"></a><strong>三，事件过滤器（Even Filter）</strong></h3><p> 某些应用场景下，需要拦截某个组件发生的事件，让这个事件不再向其他组件进行传播，这时候可以为这个组件或其父组件安装一个事件过滤器，<strong>该过滤器在event分发之前进行拦截。</strong></p>
+<p><strong>事件的过滤有两个步骤：</strong></p>
+<p>1️⃣对QObject组件安装过滤器**（调用**<strong>installEvenFilte*r*函数）</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">QObject::installEventFilter</span> <span class="params">( QObject * filterObj )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数filterobj 是指谁为组件安装过滤器（一般是父类）</p>
+<ul>
+<li>这个函数接受一个 QObject *类型的参数。记得刚刚我们说的，eventFilter()函数是 QObject 的一个成员函数，因此，任意 QObject 都可以作为事件过滤器（问题在于，如果你没有重写 eventFilter()函数，这个事件过滤器是没有任何作用的，因为默认什么都不会过滤）。已经存在的过滤器则可以通过**QObject::removeEventFilter()**函数移除。 </li>
+<li>我们可以向一个对象上面安装多个事件处理器 ，只要调用多次installEventFilter()函数。如果一个对象存在多个事件过滤器，那么，最后一个安装的会第一个执行，也就是后进先执行的顺序。</li>
+</ul>
+<p>2️⃣事件过滤器的重写**（evenFilter函数）**</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">QObject::eventFilter</span> <span class="params">( QObject * watched, QEvent * event )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，函数有两个参数，一个为具体发生事件的组件，一个为发生的事件（产生的QEvent对象）。当事件是我们感兴趣的类型，可以就地进行处理，并令其不再转发给其他组件。函数的返回值也是bool类型，作用跟even函数类似，返回true为不再转发，false则让其继续被处理。</p>
+<p><strong>实例</strong>：通过事件过滤器阻塞上面代码中的鼠标按下事件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;qtest.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&quot;qmouseevent&quot;</span></span></span><br><span class="line"></span><br><span class="line">QTest::<span class="built_in">QTest</span>(QWidget *parent)</span><br><span class="line">    : <span class="built_in">QWidget</span>(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ui.<span class="built_in">setupUi</span>(<span class="keyword">this</span>);</span><br><span class="line">    <span class="comment">//第一步：给label添加过滤器</span></span><br><span class="line">    ui.label-&gt;<span class="built_in">installEventFilter</span>(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//第二步：重写过滤事件</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">QTest::eventFilter</span><span class="params">(QObject* obj, QEvent* e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (obj == ui.label)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//如果鼠标按下，再事件分发中做拦截</span></span><br><span class="line">        <span class="keyword">if</span> (e-&gt;<span class="built_in">type</span>() == QEvent::MouseButtonPress)</span><br><span class="line">        &#123;</span><br><span class="line">            QMouseEvent* event = <span class="built_in">static_cast</span>&lt;QMouseEvent*&gt;(e);</span><br><span class="line">            ui.label-&gt;<span class="built_in">setText</span>(<span class="built_in">QString</span>(<span class="string">&quot;eventfilter mouse is press x:%1,y:%2&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>()));</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//返回ture，说明用户自己处理事件，不往下分发（即拦截上面的按下事件）</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> QWidget::<span class="built_in">eventFilter</span>(obj, e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重写鼠标按下事件</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">QTest::mousePressEvent</span><span class="params">(QMouseEvent* event)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ui.label-&gt;<span class="built_in">setText</span>(<span class="built_in">QString</span>(<span class="string">&quot;mouse is press x:%1,y:%2&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重写事件分发</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">QTest::event</span><span class="params">(QEvent* e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//如果鼠标按下，再事件分发中做拦截</span></span><br><span class="line">    <span class="keyword">if</span> (e-&gt;<span class="built_in">type</span>() == QEvent::MouseButtonPress)</span><br><span class="line">    &#123;</span><br><span class="line">        QMouseEvent* event = <span class="built_in">static_cast</span>&lt;QMouseEvent*&gt;(e);</span><br><span class="line">        ui.label-&gt;<span class="built_in">setText</span>(<span class="built_in">QString</span>(<span class="string">&quot;event mouse is press x:%1,y:%2&quot;</span>).<span class="built_in">arg</span>(event-&gt;<span class="built_in">x</span>()).<span class="built_in">arg</span>(event-&gt;<span class="built_in">y</span>()));</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;<span class="comment">//返回ture，说明用户自己处理事件，不往下分发（即拦截上面的按下事件）</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> QWidget::<span class="built_in">event</span>(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行结果：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29ccad815a.png"></p>
+<p>可以看到在过滤器事件中就监听了鼠标按压（即阻塞了后面的事件分发和鼠标按压）</p>
+<p>转载自：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xyf327/p/15099136.html">唯有自己强大</a>          如有侵权，在下方评论  立刻删除。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">wyp</div><div class="post-copyright__author_desc">变得更强</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/')">Qt07鼠标事件</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=undefined&amp;url=http://example.com/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/&amp;pic=undefined" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">wyp的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/Qt%E5%AD%A6%E4%B9%A0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Qt学习<span class="tagsPageCount">7</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29aae5419c.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Qt06定时器</div></div></a></div><div class="next-post pull-right"><a href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d8ecad336.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Qt08项目打包和发布</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2025/03/13/Qt01%E5%AF%B9%E8%B1%A1%E6%A0%91%E5%92%8C%E7%AA%97%E5%8F%A3%E5%9D%90%E6%A0%87%E4%BD%93%E7%B3%BB/" title="Qt01对象树和窗口坐标体系"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2ddff54ce9.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt01对象树和窗口坐标体系</div></div></a></div><div><a href="/2025/03/13/Qt02%E4%BF%A1%E5%8F%B7%E5%92%8C%E6%A7%BD/" title="Qt02信号和槽"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2de49d9711.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt02信号和槽</div></div></a></div><div><a href="/2025/03/13/Qt03%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" title="Qt03文件读写"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2de9444a7b.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt03文件读写</div></div></a></div><div><a href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Qt06定时器"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29aae5419c.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt06定时器</div></div></a></div><div><a href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/" title="Qt08项目打包和发布"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d8ecad336.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt08项目打包和发布</div></div></a></div><div><a href="/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" title="Qt09TCP-IP网络通信"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt09TCP-IP网络通信</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)" style="display: none">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">C++、算法、开发</b>相关的问题和看法，还有<b style="color:#fff">英语</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">wyp</h1><div class="author-info__desc">变得更强</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/wypnote" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://bornleader10.github.io/" target="_blank" title="notesite"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-next-dot-js"></use></svg></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2025/02/25/67bde8b1087f1.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%8C%E4%BA%8B%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">一，事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%EF%BC%8C%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%88%86%E5%8F%91%EF%BC%9Aevent%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text"> 二，事件的分发：event函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%EF%BC%8C%E4%BA%8B%E4%BB%B6%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%88Even-Filter%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">三，事件过滤器（Even Filter）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" title="Qt09TCP-IP网络通信"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt09TCP-IP网络通信"/></a><div class="content"><a class="title" href="/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" title="Qt09TCP-IP网络通信">Qt09TCP-IP网络通信</a><time datetime="2025-03-13T02:10:23.000Z" title="发表于 2025-03-13 10:10:23">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/" title="Qt08项目打包和发布"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d8ecad336.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt08项目打包和发布"/></a><div class="content"><a class="title" href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/" title="Qt08项目打包和发布">Qt08项目打包和发布</a><time datetime="2025-03-13T02:10:22.000Z" title="发表于 2025-03-13 10:10:22">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/" title="Qt07鼠标事件"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d63dc518c.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt07鼠标事件"/></a><div class="content"><a class="title" href="/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/" title="Qt07鼠标事件">Qt07鼠标事件</a><time datetime="2025-03-13T02:10:21.000Z" title="发表于 2025-03-13 10:10:21">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Qt06定时器"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29aae5419c.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt06定时器"/></a><div class="content"><a class="title" href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Qt06定时器">Qt06定时器</a><time datetime="2025-03-13T02:10:20.000Z" title="发表于 2025-03-13 10:10:20">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt05%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" title="Qt05多线程和线程池"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d86fd3864.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt05多线程和线程池"/></a><div class="content"><a class="title" href="/2025/03/13/Qt05%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" title="Qt05多线程和线程池">Qt05多线程和线程池</a><time datetime="2025-03-13T02:10:19.000Z" title="发表于 2025-03-13 10:10:19">2025-03-13</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By wyp</div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://bornleader10.github.io/" title="笔记站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/next.ico" alt="笔记站"/><span class="back-menu-item-text">笔记站</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 互动</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友情链接</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Qt/" style="font-size: 0.88rem;">Qt<sup>1</sup></a><a href="/tags/Qt%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem;">Qt学习<sup>7</sup></a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 0.88rem;">多线程<sup>2</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 0.88rem;">教程<sup>1</sup></a><a href="/tags/%E7%A7%91%E7%A0%94%E8%AE%B0%E5%BD%95/" style="font-size: 0.88rem;">科研记录<sup>1</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/" style="font-size: 0.88rem;">算法模板<sup>4</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 0.88rem;">网络编程<sup>1</sup></a><a href="/tags/%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/" style="font-size: 0.88rem;">聊天室项目<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" style="font-size: 0.88rem;">面试问题<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="12325576688" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://music.163.com/#/playlist?id=12325576688&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span></span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("18/06/2024 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2024 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 wyp 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script async src="https://at.alicdn.com/t/c/font_4822757_bqyvyevxzi.js?spm=a313x.manage_type_myprojects.i1.10.534e3a813N0GNT&amp;file=font_4822757_bqyvyevxzi.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

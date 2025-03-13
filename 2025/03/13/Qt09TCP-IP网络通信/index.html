@@ -1,0 +1,604 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Qt09TCP-IP网络通信 | wyp的博客</title><meta name="keywords" content="Qt学习,网络编程"><meta name="author" content="wyp"><meta name="copyright" content="wyp"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Qt09TCP-IP网络通信"><meta name="application-name" content="Qt09TCP-IP网络通信"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="Qt09TCP-IP网络通信"><meta property="og:url" content="http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/index.html"><meta property="og:site_name" content="wyp的博客"><meta property="og:description" content="TCP&amp;#x2F;IP通信（即SOCKET通信）是通过网线将服务器Server端和客户机Client端进行连接，在遵循ISO&amp;#x2F;OSI模型的四层层级构架的基础上通过TCP&amp;#x2F;IP协议建立的通讯。控制器可以设置为服务器端或客户端。 关于TCP&amp;#x2F;IP协议可详看：TCP&amp;amp;#x2F"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png"><meta property="article:author" content="wyp"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png"><meta name="description" content="TCP&amp;#x2F;IP通信（即SOCKET通信）是通过网线将服务器Server端和客户机Client端进行连接，在遵循ISO&amp;#x2F;OSI模型的四层层级构架的基础上通过TCP&amp;#x2F;IP协议建立的通讯。控制器可以设置为服务器端或客户端。 关于TCP&amp;#x2F;IP协议可详看：TCP&amp;amp;#x2F"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="manifest" href="/manifest.json"/><meta name="msapplication-TileColor" content="var(--anzhiyu-main)"/><link rel="mask-icon" href="/img/siteicon/apple-icon-180.png" color="#5bbad5"/><link rel="apple-touch-icon" sizes="180x180" href="/img/siteicon/apple-icon-180.png"/><link rel="apple-touch-icon-precomposed" sizes="180x180" href="/img/siteicon/apple-icon-180.png"/><link rel="icon" type="image/png" sizes="32x32" href="/img/siteicon/32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/img/siteicon/16.png"/><link rel="bookmark" href="/img/siteicon/apple-icon-180.png"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2388-1668.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2048-1536.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1668-2224.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2224-1668.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1620-2160.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2160-1620.jpg" media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1290-2796.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2796-1290.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1179-2556.jpg" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2556-1179.jpg" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1284-2778.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2778-1284.jpg" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2532-1170.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1125-2436.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2436-1125.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1242-2688.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2688-1242.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-828-1792.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1792-828.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1242-2208.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-2208-1242.jpg" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-750-1334.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"/><link rel="apple-touch-startup-image" href="/img/siteicon/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: undefined,
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"","mailMd5":""},
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: {"apiurl":"https://friends.anheyu.com/"},
+  navMusic: true,
+  mainTone: {"mode":"both","api":"https://img2color-go.vercel.app/api?img=","cover_change":true},
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":1,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    simplehomepage: false,
+    post: true
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: wyp","link":"链接: ","source":"来源: wyp的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'wyp的博客',
+  title: 'Qt09TCP-IP网络通信',
+  postAI: '',
+  pageFillDescription: '一客户端, 二服务器（需要一直运行哦）, 三TCPx2FIP文件传输通信即通信是通过网线将服务器端和客户机端进行连接在遵循模型的四层层级构架的基础上通过协议建立的通讯控制器可以设置为服务器端或客户端关于协议可详看协议详解知乎总的来说通讯有两个部分客户端和服务器监听套接字和通讯套接字监听套接字顾名思义监听关于各种通讯的状态一旦进行通讯监听套接字会启动通讯套接字进行通讯客户端使用函数主动连接服务器后服务器会触发这个槽函数并进行取出监听套接字将相关内容取出并赋给通讯套接字客户端向服务器发送数据触发进行处理彼此传递时原理都是这样的对双方来说都起作用的部分一旦建立连接就会触发服务器特殊一点触发的是互传数据也是一样的一旦接受到就会触发服务器中需要监听套接字以及通讯套接字监听套接字用于监听客户端是否给服务器发送请求本篇博文做了初步的学习与尝试编写了一个客户端和服务器基于窗口通信以及文件传输的小例程一客户端客户端的代码比服务器稍简单总的来说使用中的类与服务器进行通信只需要以下步创建套接字对象使用这个对象连接服务器获取获取端口数据使用函数向服务器发送数据获取控件中的数据并发送给服务器当接收缓冲区有新数据到来时会发出信号因此为该信号添加槽函数以读取数据断开与服务器的连接关于和的区别可以按看帮助客户端例程新建一个项目客户机界面本地回路可以连接到本地电脑内部循环的如果要和局域网其他连接在运行地址查看本机创建指针回收内存连接服务器获取获取端口数据取消已有的连接连接服务器等待直到连接成功如果连接成功按钮使能修改按键文字断开服务器连接接收缓冲区服务器信息断开连接连接服务器关闭发送按钮使能接收缓冲区信息函数发送按钮事件获取控件中的数据并发送给服务器判断是否写入成功写入成功没有写入成功二服务器需要一直运行哦服务器除了使用到了类还需要用到类即便如此也只是比客户端复杂一点点用到了个步骤创建对象侦听一个端口使得客户端可以使用这个端口访问服务器监听所有和端口当服务器被客户端访问时会发出信号因此为该信号添加槽函数并用一个对象接受客户端访问解析所有客户连接连接上后通过对象获取连接信息监听客户端是否有消息发送使用的函数向客户端发送数据当接收缓冲区有新数据到来时会发出信号因此为该信号添加槽函数以读取数据监听客户端是否有消息发送获取客户端向服务器发送的信息最多接收的数据服务器接收到信息后返回一个取消侦听服务器例程添加一个新的项目服务器界面一个客户端对应一个客户机连接信号槽侦听从输入框获取端口号侦听指定端口的所有若出错则输出错误信息修改按键文字取消侦听取消侦听修改按键文字侦听解析所有客户连接连接上后通过获取连接信息提示连接成功复选框选项为连接服务器的将地址放入属性内监听客户端是否有消息发送获取客户端向服务器发送的信息最多接收的数据服务器向客户端发送信息注意中需要写入类型的元素或类型的元素效果展示三文件传输上文实现了消息的传输由于最多接收的数据因此对于大文件的传输用此方法是不可取的文件传输的思路客户端和服务器连接客户端选择文件并发送文件给服务器发送的是文件的帧头格式文件名大小服务器触发然后解析文件帧头获取文件名和大小并返回客户端一个消息客户端触发然后发送文件数据通过显示进度服务器再次触发接收文件数据并保存通过判断接收的是文件帧头还是文件数据代码实现新建服务器项目接收文件的总大小当前接收文件的大小当前接收的文件数据监听端口的如果有用户连接触发槽函数判断当前连接了多少人用和我们的客户端连接一个客户端对应一个套接字服务器界面上输出客户端信息新用户连接如果客户端发送信息过来了触发匿名函数用一个标志位判断是头还是数据位如果是头解析头文件名文件大小解析帧头文件名解析帧头文件大小下次接收到的文件就是我们的数据根据文件名和文件大小接收和保存文件每接收一次文件当前文件大小当接收文件大小等于总文件大小即文件数据接收完毕保存文件新建客户端项目获取获取端口数据连接服务器等待连接成功连接服务器成功如果服务器发送信息到客户端触发匿名函数读取服务器发送的信息即缓冲区信息读取文件失败当前已经发送的大小总文件大小读文件放入打他数组中返回读取到的大小把读取到的数据发送给服务器实时获取当前发送的文件大小更新界面进度条当发送文件等于文件大小时发送完毕循环结束连接服务器失败选择文件事件打开文件发送文件事件用获取文件名和大小格式文件名大小服务器用该格式解析文件名和大小将该格式发送给服务器转或类型效果展示转载自唯有自己强大如有侵权在下方评论立刻删除',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-13 21:45:01',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://bornleader10.github.io/" title="笔记站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/next.ico" alt="笔记站"/><span class="back-menu-item-text">笔记站</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">wyp的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 互动</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友情链接</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Qt/" style="font-size: 1.05rem;">Qt<sup>1</sup></a><a href="/tags/Qt%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">Qt学习<sup>7</sup></a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.05rem;">多线程<sup>2</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 1.05rem;">教程<sup>1</sup></a><a href="/tags/%E7%A7%91%E7%A0%94%E8%AE%B0%E5%BD%95/" style="font-size: 1.05rem;">科研记录<sup>1</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/" style="font-size: 1.05rem;">算法模板<sup>4</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 1.05rem;">网络编程<sup>1</sup></a><a href="/tags/%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/" style="font-size: 1.05rem;">聊天室项目<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" style="font-size: 1.05rem;">面试问题<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">15</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Qt/" itemprop="url">Qt</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/Qt%E5%AD%A6%E4%B9%A0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Qt学习</span></a><a class="article-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>网络编程</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Qt09TCP-IP网络通信</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-03-13T02:10:23.000Z" title="发表于 2025-03-13 10:10:23">2025-03-13</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-03-13T13:45:01.533Z" title="更新于 2025-03-13 21:45:01">2025-03-13</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">3.2k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="Qt09TCP-IP网络通信"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为济宁"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>济宁</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/"><header><a class="post-meta-categories" href="/categories/Qt/" itemprop="url">Qt</a><a href="/tags/Qt%E5%AD%A6%E4%B9%A0/" tabindex="-1" itemprop="url">Qt学习</a><a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" tabindex="-1" itemprop="url">网络编程</a><h1 id="CrawlerTitle" itemprop="name headline">Qt09TCP-IP网络通信</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">wyp</span><time itemprop="dateCreated datePublished" datetime="2025-03-13T02:10:23.000Z" title="发表于 2025-03-13 10:10:23">2025-03-13</time><time itemprop="dateCreated datePublished" datetime="2025-03-13T13:45:01.533Z" title="更新于 2025-03-13 21:45:01">2025-03-13</time></header><p>TCP&#x2F;IP通信（即SOCKET通信）是通过网线将<strong>服务器Server端</strong>和<strong>客户机Client端</strong>进行连接，在遵循ISO&#x2F;OSI模型的四层层级构架的基础上通过TCP&#x2F;IP协议建立的通讯。控制器可以设置为服务器端或客户端。</p>
+<p>关于TCP&#x2F;IP协议可详看：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33889997">TCP&#x2F;IP协议详解 - 知乎 (zhihu.com)</a></p>
+<p> 总的来说，TCP&#x2F;IP通讯有两个部分：</p>
+<ul>
+<li><strong>客户端</strong>和<strong>服务器</strong></li>
+<li><strong>QTcpServer（监听套接字）<strong>和</strong>QTcpSocket（通讯套接字）</strong></li>
+</ul>
+<p>监听套接字，顾名思义，监听关于各种通讯的状态，一旦进行通讯，监听套接字会启动通讯套接字，进行通讯</p>
+<p>客户端使用connectToHost函数主动连接服务器后，服务器会触发newConnectio这个槽函数，并进行取出QTcpServer（监听套接字），将相关内容取出并赋给QTcpSocket（通讯套接字）。<br>客户端向服务器发送数据，触发readyRead（），进行处理，彼此传递时，原理都是这样的。</p>
+<p><strong>对双方来说都起作用的部分：</strong></p>
+<ol>
+<li>一旦建立连接，就会触发connected，服务器特殊一点，触发的是newConnectio</li>
+<li>互传数据也是一样的，一旦接受到，就会触发readyread</li>
+</ol>
+<p>服务器中，需要监听套接字以及通讯套接字，监听套接字用于监听客户端是否给服务器发送请求</p>
+<p>本篇博文做了初步的学习与尝试，编写了一个客户端和服务器基于窗口通信以及文件传输的小例程。</p>
+<h3 id="一，客户端"><a href="#一，客户端" class="headerlink" title="一，客户端"></a><font color="FF0000">一，客户端</font></h3><p>客户端的代码比服务器稍简单，总的来说，使用QT中的<strong>QTcpSocket类</strong>与服务器进行通信只需要以下5步：</p>
+<p><strong>（1）创建QTcpSocket套接字对象</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket = new QTcpSocket(this);</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）使用这个对象连接服务器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">QString ip = ui.lineEdit_ip-&gt;text();//获取ip</span><br><span class="line">int port = ui.lineEdit_2-&gt;text().toInt();//获取端口数据</span><br><span class="line">socket-&gt;connectToHost(ip, port);</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）使用write函数向服务器发送数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QByteArray data = ui.lineEdit_3-&gt;text().toUtf8();//获取lineEdit控件中的数据并发送给服务器</span><br><span class="line">socket-&gt;write(data);</span><br></pre></td></tr></table></figure>
+
+<p> <strong>（4）当socket接收缓冲区有新数据到来时，会发出readRead()信号，因此为该信号添加槽函数以读取数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> connect(socket, &amp;QTcpSocket::readyRead, this, &amp;QTcpClinet::ReadData);</span><br><span class="line">void QTcpClinet::ReadData()</span><br><span class="line">&#123;</span><br><span class="line">    QByteArray buf = socket-&gt;readAll();</span><br><span class="line">    ui.textEdit-&gt;append(buf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（5）断开与服务器的连接（关于close()和disconnectFromHost()的区别，可以按F1看帮助）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket-&gt;disconnectFromHost();</span><br></pre></td></tr></table></figure>
+
+<p><strong>客户端例程：（新建一个qt项目QTcpClinet（客户机））</strong></p>
+<ul>
+<li><strong>ui界面</strong></li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dbe2f1a93.png"></p>
+<p>本地回路ip：127.0.0.1 可以连接到本地ip（电脑内部循环的ip）</p>
+<p>如果要和局域网其他ip连接 -&gt; 在运行（win+R）+cmd+ipconfig -&gt;ipv4地址 查看本机ip</p>
+<ul>
+<li><strong>QTcpClinet.h</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;QtWidgets/QWidget&gt;</span><br><span class="line">#include &quot;ui_QTcpClinet.h&quot;</span><br><span class="line">#include&quot;QTcpSocket.h&quot;</span><br><span class="line">#pragma execution_character_set(&quot;utf-8&quot;)</span><br><span class="line">class QTcpClinet : public QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    QTcpClinet(QWidget *parent = Q_NULLPTR);</span><br><span class="line">    ~QTcpClinet();</span><br><span class="line">public slots:</span><br><span class="line">    void on_btn_connect_clicked();</span><br><span class="line">    void ReadData();</span><br><span class="line">    void on_btn_push_clicked();</span><br><span class="line">private:</span><br><span class="line">    Ui::QTcpClinetClass ui;</span><br><span class="line">    QTcpSocket* socket;//创建socket指针</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>QTcpClinet.cpp</strong></li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;QTcpClinet.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">QTcpClinet::<span class="built_in">QTcpClinet</span>(QWidget *parent)</span><br><span class="line">    : <span class="built_in">QWidget</span>(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ui.<span class="built_in">setupUi</span>(<span class="keyword">this</span>);</span><br><span class="line">    socket = <span class="keyword">new</span> <span class="built_in">QTcpSocket</span>(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QTcpClinet::~<span class="built_in">QTcpClinet</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> <span class="keyword">this</span>-&gt;socket;<span class="comment">//回收内存</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">QTcpClinet::on_btn_connect_clicked</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (ui.btn_connect-&gt;<span class="built_in">text</span>()==<span class="built_in">tr</span>(<span class="string">&quot;连接服务器&quot;</span>))</span><br><span class="line">  &#123;</span><br><span class="line">    QString ip = ui.lineEdit_ip-&gt;<span class="built_in">text</span>();<span class="comment">//获取ip</span></span><br><span class="line">    <span class="type">int</span> port = ui.lineEdit_2-&gt;<span class="built_in">text</span>().<span class="built_in">toInt</span>();<span class="comment">//获取端口数据</span></span><br><span class="line">    <span class="comment">//取消已有的连接</span></span><br><span class="line">    socket-&gt;<span class="built_in">abort</span>();</span><br><span class="line">    <span class="comment">//连接服务器</span></span><br><span class="line">    socket-&gt;<span class="built_in">connectToHost</span>(ip, port);</span><br><span class="line">    <span class="type">bool</span> isconnect = socket-&gt;<span class="built_in">waitForConnected</span>();<span class="comment">//等待直到连接成功</span></span><br><span class="line">    <span class="comment">//如果连接成功</span></span><br><span class="line">    <span class="keyword">if</span> (isconnect)</span><br><span class="line">    &#123;</span><br><span class="line">        ui.textEdit-&gt;<span class="built_in">append</span>(<span class="string">&quot;The connection was successful!!&quot;</span>);</span><br><span class="line">        ui.btn_push-&gt;<span class="built_in">setEnabled</span>(<span class="literal">true</span>);<span class="comment">//按钮使能</span></span><br><span class="line">        <span class="comment">//修改按键文字</span></span><br><span class="line">        ui.btn_connect-&gt;<span class="built_in">setText</span>(<span class="string">&quot;断开服务器连接&quot;</span>);</span><br><span class="line">        <span class="comment">//接收缓冲区（服务器）信息</span></span><br><span class="line">        <span class="built_in">connect</span>(socket, &amp;QTcpSocket::readyRead, <span class="keyword">this</span>, &amp;QTcpClinet::ReadData);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        ui.textEdit-&gt;<span class="built_in">append</span>(<span class="string">&quot;The connection falied!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">      <span class="comment">//断开连接</span></span><br><span class="line">      socket-&gt;<span class="built_in">disconnectFromHost</span>();</span><br><span class="line">      ui.btn_connect-&gt;<span class="built_in">setText</span>(<span class="string">&quot;连接服务器&quot;</span>);</span><br><span class="line">      ui.btn_push-&gt;<span class="built_in">setEnabled</span>(<span class="literal">false</span>);<span class="comment">//关闭发送按钮使能</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//接收缓冲区信息函数</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">QTcpClinet::ReadData</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    QByteArray buf = socket-&gt;<span class="built_in">readAll</span>();</span><br><span class="line">    ui.textEdit-&gt;<span class="built_in">append</span>(buf);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//发送按钮事件</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">QTcpClinet::on_btn_push_clicked</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    QByteArray data = ui.lineEdit_3-&gt;<span class="built_in">text</span>().<span class="built_in">toUtf8</span>();<span class="comment">//获取lineEdit控件中的数据并发送给服务器</span></span><br><span class="line">    socket-&gt;<span class="built_in">write</span>(data);</span><br><span class="line">    <span class="comment">//判断是否写入成功</span></span><br><span class="line">    <span class="type">bool</span> iswrite = socket-&gt;<span class="built_in">waitForBytesWritten</span>();</span><br><span class="line">    <span class="keyword">if</span> (iswrite)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//写入成功</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//没有写入成功</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二，服务器（需要一直运行哦）"><a href="#二，服务器（需要一直运行哦）" class="headerlink" title="二，服务器（需要一直运行哦）"></a><font color="FF0000">二，服务器（需要一直运行哦）</font></h3><p>服务器除了使用到了<strong>QTcpSocket类</strong>，还需要用到<strong>QTcpSever类</strong>。即便如此，也只是比客户端复杂一点点，用到了6个步骤：</p>
+<p><strong>（1）创建QTcpSever对象</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server = new QTcpServer(this);</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）侦听一个端口，使得客户端可以使用这个端口访问服务器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server-&gt;listen(QHostAddress::Any, 6677);//监听所有ip和6677端口</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）当服务器被客户端访问时，会发出newConnection()信号，因此为该信号添加槽函数，并用一个QTcpSocket对象接受客户端访问</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">connect(server, &amp;QTcpServer::newConnection, this, &amp;TcpServer::ClientConnect);</span><br><span class="line">void TcpServer::ClientConnect()</span><br><span class="line">&#123;</span><br><span class="line">    //解析所有客户连接</span><br><span class="line">    while (server-&gt;hasPendingConnections())</span><br><span class="line">    &#123;</span><br><span class="line">        //连接上后通过socket（QTcpSocket对象）获取连接信息</span><br><span class="line">        socket = server-&gt;nextPendingConnection();</span><br><span class="line">        QString str = QString(&quot;[ip:%1,port:%2]&quot;).arg(socket-&gt;peerAddress().toString()).arg(socket-&gt;peerPort());//监听客户端是否有消息发送</span><br><span class="line">        connect(socket, &amp;QTcpSocket::readyRead, this, &amp;TcpServer::ReadData1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（4）使用socket的write函数向客户端发送数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket-&gt;write(data);</span><br></pre></td></tr></table></figure>
+
+<p><strong>（5）当socket接收缓冲区有新数据到来时，会发出readRead()信号，因此为该信号添加槽函数以读取数据</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//监听客户端是否有消息发送</span><br><span class="line">connect(socket, &amp;QTcpSocket::readyRead, this, &amp;TcpServer::ReadData1);</span><br><span class="line">//获取客户端向服务器发送的信息</span><br><span class="line">void TcpServer::ReadData1()</span><br><span class="line">&#123;</span><br><span class="line">    QByteArray buf = socket-&gt;readAll();//readAll最多接收65532的数据</span><br><span class="line">    QString str = QString(&quot;[ip:%1,port:%2]&quot;).arg(socket-&gt;peerAddress().toString()).arg(socket-&gt;peerPort());</span><br><span class="line">    ui.textEdit_server-&gt;append(str +QString(buf));</span><br><span class="line">    //socket-&gt;write(&quot;ok&quot;);//服务器接收到信息后返回一个ok</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>（6）取消侦听</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server-&gt;close();</span><br></pre></td></tr></table></figure>
+
+<p> <strong>服务器例程：（添加一个新的qt项目TcpServer（服务器））</strong></p>
+<ul>
+<li><strong>ui界面</strong></li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dc19a7d8f.png"></p>
+<ul>
+<li><strong>TcpServer.h</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;QtWidgets/QWidget&gt;</span><br><span class="line">#include&quot;ui_TcpServer.h&quot;</span><br><span class="line">#include&quot;qtcpserver.h&quot;</span><br><span class="line">#include&quot;qtcpsocket.h&quot;</span><br><span class="line"></span><br><span class="line">class TcpServer : public QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    TcpServer(QWidget *parent = Q_NULLPTR);</span><br><span class="line">    ~TcpServer();</span><br><span class="line">public slots:</span><br><span class="line">    void on_btn_server_clicked();</span><br><span class="line">    void on_btn_listen_clicked();</span><br><span class="line">private:</span><br><span class="line">    Ui::TcpServerClass ui;</span><br><span class="line">    QTcpServer* server;</span><br><span class="line">    QTcpSocket* socket;//一个客户端对应一个socket</span><br><span class="line">    void ClientConnect();</span><br><span class="line">    void ReadData1();</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>TcpServer.cpp</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;TcpServer.h&quot;</span><br><span class="line">#include&quot;qstring.h&quot;</span><br><span class="line">#include&quot;qdebug.h&quot;</span><br><span class="line">#pragma execution_character_set(&quot;utf-8&quot;)</span><br><span class="line">TcpServer::TcpServer(QWidget *parent)</span><br><span class="line">    : QWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ui.setupUi(this);</span><br><span class="line">    server = new QTcpServer(this);</span><br><span class="line">   //客户机连接信号槽</span><br><span class="line">    connect(server, &amp;QTcpServer::newConnection, this, &amp;TcpServer::ClientConnect);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TcpServer::~TcpServer()</span><br><span class="line">&#123;</span><br><span class="line">    server-&gt;close();</span><br><span class="line">    server-&gt;deleteLater();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void TcpServer::on_btn_listen_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    if (ui.btn_listen-&gt;text()==&quot;侦听&quot;)</span><br><span class="line">    &#123;</span><br><span class="line">        //从输入框获取端口号</span><br><span class="line">        int port = ui.lineEdit_port-&gt;text().toInt();</span><br><span class="line">        //侦听指定端口的所有ip</span><br><span class="line">        if (!server-&gt;listen(QHostAddress::Any, port))</span><br><span class="line">        &#123;</span><br><span class="line">            //若出错，则输出错误信息</span><br><span class="line">            qDebug() &lt;&lt; server-&gt;errorString();</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        //修改按键文字</span><br><span class="line">        ui.btn_listen-&gt;setText(&quot;取消侦听&quot;);    </span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        socket-&gt;abort();</span><br><span class="line">        //取消侦听</span><br><span class="line">        server-&gt;close();</span><br><span class="line">        //修改按键文字</span><br><span class="line">        ui.btn_listen-&gt;setText(&quot;侦听&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void TcpServer::ClientConnect()</span><br><span class="line">&#123;</span><br><span class="line">    //解析所有客户连接</span><br><span class="line">    while (server-&gt;hasPendingConnections())</span><br><span class="line">    &#123;</span><br><span class="line">        //连接上后通过socket获取连接信息</span><br><span class="line">        socket = server-&gt;nextPendingConnection();</span><br><span class="line">        QString str = QString(&quot;[ip:%1,port:%2]&quot;).arg(socket-&gt;peerAddress().toString()).arg(socket-&gt;peerPort());</span><br><span class="line">        //提示连接成功</span><br><span class="line">        ui.textEdit_server-&gt;append(str+&quot;Connect to the server&quot;);</span><br><span class="line">        //复选框选项为连接服务器的ip</span><br><span class="line">        ui.comboBox-&gt;addItem(str);</span><br><span class="line">        //将socket地址放入combobox属性内</span><br><span class="line">        //ui.comboBox-&gt;setItemData(ui.comboBox-&gt;count()-1, QVariant((int)socket));</span><br><span class="line">        //监听客户端是否有消息发送</span><br><span class="line">        connect(socket, &amp;QTcpSocket::readyRead, this, &amp;TcpServer::ReadData1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//获取客户端向服务器发送的信息</span><br><span class="line">void TcpServer::ReadData1()</span><br><span class="line">&#123;</span><br><span class="line">    QByteArray buf = socket-&gt;readAll();//readAll最多接收65532的数据</span><br><span class="line">    QString str = QString(&quot;[ip:%1,port:%2]&quot;).arg(socket-&gt;peerAddress().toString()).arg(socket-&gt;peerPort());</span><br><span class="line">    ui.textEdit_server-&gt;append(str +QString(buf));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//服务器向客户端发送信息</span><br><span class="line">void TcpServer::on_btn_server_clicked()</span><br><span class="line">&#123;</span><br><span class="line">  if(ui.comboBox-&gt;count()== 0)return;</span><br><span class="line">  //QTcpSocket* skt=  (QTcpSocket*)ui.comboBox-&gt;itemData(ui.comboBox-&gt;currentIndex()).value&lt;int&gt;();</span><br><span class="line">  socket-&gt;write(ui.lineEdit1-&gt;text().toUtf8());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：write中需要写入char类型的元素或QByteArray类型的元素</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dc2f4307e.png"></p>
+<p><strong>效果展示：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dc5b93345.gif"></p>
+<h3 id="三，TCP-IP文件传输"><a href="#三，TCP-IP文件传输" class="headerlink" title="三，TCP&#x2F;IP文件传输"></a><font color="FF0000">三，TCP&#x2F;IP文件传输</font></h3><p>上文实现了消息的传输，由于<strong>socket-&gt;readAll();（readAll最多接收65532的数据）</strong>，因此对于大文件的传输用此方法是不可取的。</p>
+<p><strong>TCP&#x2F;IP文件传输的思路：</strong></p>
+<ol>
+<li>客户端和服务器连接</li>
+<li>客户端选择文件，并发送文件给服务器（发送的是文件的帧头，格式：文件名&amp;大小）</li>
+<li>服务器触发readyRead，然后解析文件帧头（获取文件名和大小），并返回客户端一个ok消息</li>
+<li>客户端触发readyRead，然后发送文件数据，通过progressBar显示进度</li>
+<li>服务器再次触发readyRead，接收文件数据，并保存（通过ishead判断接收的是文件帧头还是文件数据）</li>
+</ol>
+<p><strong>代码实现：</strong></p>
+<p>新建服务器项目（TcpServer）</p>
+<ul>
+<li><strong>TcpServer.h</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#pragma once</span><br><span class="line"></span><br><span class="line">#include &lt;QtWidgets/QWidget&gt;</span><br><span class="line">#include &quot;ui_TcpServer.h&quot;</span><br><span class="line">#include&quot;qtcpserver.h&quot;</span><br><span class="line">#include&quot;qtcpsocket.h&quot;</span><br><span class="line">#pragma execution_character_set(&quot;utf-8&quot;)</span><br><span class="line">class TcpServer : public QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    TcpServer(QWidget *parent = Q_NULLPTR);</span><br><span class="line">    void hasConnect();</span><br><span class="line">private:</span><br><span class="line">    Ui::TcpServerClass ui;</span><br><span class="line">    QTcpServer* server;</span><br><span class="line">    QTcpSocket* socket;</span><br><span class="line">    bool ishead;</span><br><span class="line">    QString fileName;</span><br><span class="line">    int fileSize;//接收文件的总大小</span><br><span class="line">    int recvSize;//当前接收文件的大小</span><br><span class="line">    QByteArray filebuf;//当前接收的文件数据</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>TcpServer.cpp</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;TcpServer.h&quot;</span><br><span class="line">#include&quot;qfile.h&quot;</span><br><span class="line">TcpServer::TcpServer(QWidget *parent)</span><br><span class="line">    : QWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ishead = true;</span><br><span class="line">    ui.setupUi(this);</span><br><span class="line">    server = new QTcpServer(this);</span><br><span class="line">    //监听1122端口的ip</span><br><span class="line">    server-&gt;listen(QHostAddress::Any, 1122);</span><br><span class="line">    //如果有用户连接触发槽函数</span><br><span class="line">    connect(server, &amp;QTcpServer::newConnection, this, &amp;TcpServer::hasConnect);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void TcpServer::hasConnect()</span><br><span class="line">&#123;</span><br><span class="line">    while (server-&gt;hasPendingConnections()&gt;0)//判断当前连接了多少人</span><br><span class="line">    &#123;</span><br><span class="line">        //用socket和我们的客户端连接，一个客户端对应一个套接字socket</span><br><span class="line">        socket = server-&gt;nextPendingConnection();</span><br><span class="line">        //服务器界面上输出客户端信息</span><br><span class="line">        ui.textEdit-&gt;append(QString(&quot;%1：新用户连接&quot;).arg(socket-&gt;peerPort()));</span><br><span class="line">        //如果客户端发送信息过来了，触发匿名函数</span><br><span class="line">        connect(socket, &amp;QTcpSocket::readyRead, [=]() &#123;</span><br><span class="line">            QByteArray buf = socket-&gt;readAll();</span><br><span class="line">            //用一个标志位ishead判断是头还是数据位</span><br><span class="line">            if (ishead)</span><br><span class="line">            &#123;</span><br><span class="line">                //如果是头，解析头（文件名，文件大小）</span><br><span class="line">                QString str = QString(buf);</span><br><span class="line">                ui.textEdit-&gt;append(str);</span><br><span class="line">                QStringList strlist = str.split(&quot;&amp;&quot;);</span><br><span class="line">                fileName = strlist.at(0);//解析帧头文件名</span><br><span class="line">                fileSize = strlist.at(1).toInt();//解析帧头文件大小</span><br><span class="line">                ishead = false;//下次接收到的文件就是我们的数据</span><br><span class="line">                recvSize = 0;</span><br><span class="line">                filebuf.clear();</span><br><span class="line">                socket-&gt;write(&quot;ok&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                //根据文件名和文件大小接收和保存文件</span><br><span class="line">                filebuf.append(buf);</span><br><span class="line">                recvSize += buf.size();//每接收一次文件，当前文件大小+1</span><br><span class="line">                //当接收文件大小等于总文件大小，即文件数据接收完毕</span><br><span class="line">                if (recvSize&gt;=fileSize)</span><br><span class="line">                &#123;</span><br><span class="line">                    //保存文件</span><br><span class="line">                    QFile file(ui.lineEdit-&gt;text() + fileName);</span><br><span class="line">                    file.open(QIODevice::WriteOnly);</span><br><span class="line">                    file.write(filebuf);</span><br><span class="line">                    file.close();</span><br><span class="line">                    ishead = true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建客户端项目（QTcpClient）</p>
+<ul>
+<li><strong>QTcpClient.h</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;QtWidgets/QWidget&gt;</span><br><span class="line">#include&quot;ui_QTcpClient.h&quot;</span><br><span class="line">#include&quot;qtcpsocket.h&quot;</span><br><span class="line">#pragma execution_character_set(&quot;utf-8&quot;)</span><br><span class="line">class QTcpClient : public QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    QTcpClient(QWidget *parent = Q_NULLPTR);</span><br><span class="line">public slots:</span><br><span class="line">    void on_btn_connect_clicked();</span><br><span class="line">    void on_btn_choose_clicked();</span><br><span class="line">    void on_btn_open_clicked();</span><br><span class="line">    </span><br><span class="line">private:</span><br><span class="line">    Ui::QTcpClientClass ui;</span><br><span class="line">    QTcpSocket* socket;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>QTcpClient.cpp</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">#include &quot;QTcpClient.h&quot;</span><br><span class="line">#include&quot;qfiledialog.h&quot;</span><br><span class="line">#include&quot;qfileinfo.h&quot;</span><br><span class="line">QTcpClient::QTcpClient(QWidget *parent)</span><br><span class="line">    : QWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    ui.setupUi(this);</span><br><span class="line">    socket = new QTcpSocket(this);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">void QTcpClient::on_btn_connect_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    QString ip = ui.lineEdit_ip-&gt;text();//获取ip</span><br><span class="line">    int port = ui.lineEdit_port-&gt;text().toInt();//获取端口数据</span><br><span class="line">    socket-&gt;connectToHost(ip, port);//连接服务器</span><br><span class="line">    //等待连接成功</span><br><span class="line">    if (socket-&gt;waitForConnected())</span><br><span class="line">    &#123;</span><br><span class="line">        ui.textEdit-&gt;append(&quot;&lt;font color=&#x27;green&#x27;&gt;连接服务器成功！&lt;/font&gt;&quot;);    </span><br><span class="line">        ui.btn_open-&gt;setEnabled(true);</span><br><span class="line">        </span><br><span class="line">        //如果服务器发送信息到客户端，触发匿名函数</span><br><span class="line">        connect(socket, &amp;QTcpSocket::readyRead, [=]() &#123;</span><br><span class="line">            //读取服务器发送的信息（即缓冲区信息）</span><br><span class="line">            QByteArray buf = socket-&gt;readAll();</span><br><span class="line">            if (buf==&quot;ok&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                QFile file = (ui.label_path-&gt;text());</span><br><span class="line">                if (!file.open(QIODevice::ReadWrite))</span><br><span class="line">                &#123;</span><br><span class="line">                    //读取文件失败</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                qint64 currentlen = 0;//当前已经发送的大小</span><br><span class="line">                qint64 allLength = file.size();//总文件大小</span><br><span class="line">                do</span><br><span class="line">                &#123;</span><br><span class="line">                    char data[1024];</span><br><span class="line">                    qint64 msize = file.read(data, 1024);//读文件放入打他数组中，返回读取到的大小</span><br><span class="line">                    socket-&gt;write(data, msize);//把读取到的data数据发送给服务器</span><br><span class="line">                    currentlen += msize;//实时获取当前发送的文件大小</span><br><span class="line">                    ui.progressBar-&gt;setValue(currentlen *100 / allLength);//更新界面进度条</span><br><span class="line">                &#125; while (currentlen &lt; allLength);//当发送文件等于文件大小时，发送完毕，循环结束</span><br><span class="line">            &#125;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        ui.textEdit-&gt;append(&quot;&lt;font color=&#x27;red&#x27;&gt;连接服务器失败！&lt;/font&gt;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//选择文件事件</span><br><span class="line">void QTcpClient::on_btn_choose_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    QString path = QFileDialog::getOpenFileName(this, &quot;打开文件&quot;, &quot;&quot;, &quot;(*.*)&quot;);</span><br><span class="line">    ui.label_path-&gt;setText(path);</span><br><span class="line">&#125;</span><br><span class="line">//发送文件事件</span><br><span class="line">void QTcpClient::on_btn_open_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    QFileInfo info(ui.label_path-&gt;text());</span><br><span class="line">    //用QFileInfo：：fileName，size获取文件名和大小 格式：文件名&amp;大小</span><br><span class="line">    //服务器用该格式解析文件名和大小</span><br><span class="line">    QString head = QString(&quot;%1&amp;%2&quot;).arg(info.fileName()).arg(info.size());</span><br><span class="line">    //将该格式发送给服务器 toUtf8：QString转QByteArray或char类型</span><br><span class="line">    socket-&gt;write(head.toUtf8()); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果展示：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dc9a83bfe.gif"></p>
+<p>转载自：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xyf327/p/15191403.html">唯有自己强大</a>          如有侵权，在下方评论  立刻删除。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">wyp</div><div class="post-copyright__author_desc">变得更强</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/')">Qt09TCP-IP网络通信</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2024/11/04/67281fd260a15.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=undefined&amp;url=http://example.com/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/&amp;pic=undefined" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">wyp的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/Qt%E5%AD%A6%E4%B9%A0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Qt学习<span class="tagsPageCount">7</span></a><a class="post-meta__box__tags" href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>网络编程<span class="tagsPageCount">1</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d8ecad336.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Qt08项目打包和发布</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2025/03/13/Qt01%E5%AF%B9%E8%B1%A1%E6%A0%91%E5%92%8C%E7%AA%97%E5%8F%A3%E5%9D%90%E6%A0%87%E4%BD%93%E7%B3%BB/" title="Qt01对象树和窗口坐标体系"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2ddff54ce9.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt01对象树和窗口坐标体系</div></div></a></div><div><a href="/2025/03/13/Qt02%E4%BF%A1%E5%8F%B7%E5%92%8C%E6%A7%BD/" title="Qt02信号和槽"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2de49d9711.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt02信号和槽</div></div></a></div><div><a href="/2025/03/13/Qt03%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" title="Qt03文件读写"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2de9444a7b.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt03文件读写</div></div></a></div><div><a href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Qt06定时器"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29aae5419c.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt06定时器</div></div></a></div><div><a href="/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/" title="Qt07鼠标事件"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d63dc518c.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt07鼠标事件</div></div></a></div><div><a href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/" title="Qt08项目打包和发布"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d8ecad336.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2025-03-13</div><div class="title">Qt08项目打包和发布</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)" style="display: none">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/02/09/67a8047bc8ee8.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2023/08/24/64e6ce9c507bb.png" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">这有关于<b style="color:#fff">C++、算法、开发</b>相关的问题和看法，还有<b style="color:#fff">英语</b>和<b style="color:#fff">分享</b>。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about"><h1 class="author-info__name">wyp</h1><div class="author-info__desc">变得更强</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/wypnote" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a><a class="social-icon faa-parent animated-hover" href="https://bornleader10.github.io/" target="_blank" title="notesite"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-next-dot-js"></use></svg></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2025/02/25/67bde8b1087f1.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%8C%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.</span> <span class="toc-text">一，客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%EF%BC%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88%E9%9C%80%E8%A6%81%E4%B8%80%E7%9B%B4%E8%BF%90%E8%A1%8C%E5%93%A6%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">二，服务器（需要一直运行哦）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%EF%BC%8CTCP-IP%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="toc-number">3.</span> <span class="toc-text">三，TCP&#x2F;IP文件传输</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" title="Qt09TCP-IP网络通信"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2dbab1ed00.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt09TCP-IP网络通信"/></a><div class="content"><a class="title" href="/2025/03/13/Qt09TCP-IP%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1/" title="Qt09TCP-IP网络通信">Qt09TCP-IP网络通信</a><time datetime="2025-03-13T02:10:23.000Z" title="发表于 2025-03-13 10:10:23">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/" title="Qt08项目打包和发布"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d8ecad336.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt08项目打包和发布"/></a><div class="content"><a class="title" href="/2025/03/13/Qt08%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85%E5%92%8C%E5%8F%91%E5%B8%83/" title="Qt08项目打包和发布">Qt08项目打包和发布</a><time datetime="2025-03-13T02:10:22.000Z" title="发表于 2025-03-13 10:10:22">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/" title="Qt07鼠标事件"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d63dc518c.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt07鼠标事件"/></a><div class="content"><a class="title" href="/2025/03/13/Qt07%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6/" title="Qt07鼠标事件">Qt07鼠标事件</a><time datetime="2025-03-13T02:10:21.000Z" title="发表于 2025-03-13 10:10:21">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Qt06定时器"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d29aae5419c.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt06定时器"/></a><div class="content"><a class="title" href="/2025/03/13/Qt06%E5%AE%9A%E6%97%B6%E5%99%A8/" title="Qt06定时器">Qt06定时器</a><time datetime="2025-03-13T02:10:20.000Z" title="发表于 2025-03-13 10:10:20">2025-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/13/Qt05%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" title="Qt05多线程和线程池"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://bu.dusays.com/2025/03/13/67d2d86fd3864.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Qt05多线程和线程池"/></a><div class="content"><a class="title" href="/2025/03/13/Qt05%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E6%B1%A0/" title="Qt05多线程和线程池">Qt05多线程和线程池</a><time datetime="2025-03-13T02:10:19.000Z" title="发表于 2025-03-13 10:10:19">2025-03-13</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By wyp</div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://bornleader10.github.io/" title="笔记站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/next.ico" alt="笔记站"/><span class="back-menu-item-text">笔记站</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 互动</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link/"><i class="anzhiyufont anzhiyu-icon-link faa-tada" style="font-size: 0.9em;"></i><span> 友情链接</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments/"><i class="anzhiyufont anzhiyu-icon-envelope faa-tada" style="font-size: 0.9em;"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/Qt/" style="font-size: 0.88rem;">Qt<sup>1</sup></a><a href="/tags/Qt%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem;">Qt学习<sup>7</sup></a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 0.88rem;">多线程<sup>2</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 0.88rem;">教程<sup>1</sup></a><a href="/tags/%E7%A7%91%E7%A0%94%E8%AE%B0%E5%BD%95/" style="font-size: 0.88rem;">科研记录<sup>1</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/" style="font-size: 0.88rem;">算法模板<sup>4</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" style="font-size: 0.88rem;">网络编程<sup>1</sup></a><a href="/tags/%E8%81%8A%E5%A4%A9%E5%AE%A4%E9%A1%B9%E7%9B%AE/" style="font-size: 0.88rem;">聊天室项目<sup>1</sup></a><a href="/tags/%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98/" style="font-size: 0.88rem;">面试问题<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">简</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="12325576688" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://music.163.com/#/playlist?id=12325576688&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span></span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("18/06/2024 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2024 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 wyp 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo-wyps-projects-42fcfe26.vercel.app/',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.39/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script async src="https://at.alicdn.com/t/c/font_4822757_bqyvyevxzi.js?spm=a313x.manage_type_myprojects.i1.10.534e3a813N0GNT&amp;file=font_4822757_bqyvyevxzi.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
